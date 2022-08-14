@@ -15,6 +15,23 @@ texFont = font_manager.FontProperties(size=30, family='serif', math_fontfamily='
 
 requests.packages.urllib3.disable_warnings()
 
+def get_callable_cells(function):
+  callables = []
+  if not hasattr(function, 'func_closure'):
+    if hasattr(function, 'view_func'):
+      return get_callable_cells(function.view_func)
+  if not function.func_closure:
+    return [function]
+  for closure in function.func_closure:
+    contents = closure.cell_contents
+    if hasattr(contents, 'dispatch'):
+      callables.extend(get_callable_cells(contents.dispatch.__func__))
+      if hasattr(contents, 'get'):
+        callables.extend(get_callable_cells(contents.get.__func__))
+    callables.extend(get_callable_cells(contents))
+  return [function] + callables
+
+
 def zong(ctx, bot): # Alias for the Z.ping command
 	return(discord.Embed(
 		title="Pong.",

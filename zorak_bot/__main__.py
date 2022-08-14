@@ -1,5 +1,4 @@
 import logging
-import os
 
 import discord
 from discord import Member
@@ -9,13 +8,19 @@ from discord.ext.commands import Bot
 import zorak_bot.core.admin as admin
 import zorak_bot.core.play as play
 import zorak_bot.util.general as general
+from zorak_bot import BOT
 from zorak_bot.util.args_util import parse_args
 from zorak_bot.util.logging_util import setup_logger
 
 logger = logging.getLogger(__name__)
 
-bot = Bot(command_prefix=["z.", "Z."])
-bot.remove_command("help")
+bot = BOT
+
+class Zorak: #Can move towards a class based bot lise so
+	def __init__(self):
+		bot = Bot(command_prefix=["z.", "Z."])
+		bot.remove_command("help")
+		self.bot = bot
 
 @bot.event
 async def on_ready():
@@ -83,61 +88,8 @@ async def times(ctx):
 
 #-----------------------------#  User "Fun" Commands
 @bot.command()
-async def hello(ctx):
-	await ctx.send(play.hello(), reference=ctx.message)
-
-@bot.command()
-async def taunt(ctx):
-	await ctx.send(play.taunt(), reference=ctx.message)
-	
-@bot.command()
-async def catfact(ctx):
-	await ctx.send(play.catfact(), reference=ctx.message)
-
-@bot.command()
-async def dogfact(ctx):
-	await ctx.send(play.dogfact(), reference=ctx.message)
-
-@bot.command()
-async def pugfact(ctx):
-	await ctx.send(play.pugFact(), reference=ctx.message)
-
-@bot.command()
-async def catpic(ctx):
-	await ctx.send(file=discord.File(fp=play.catpic(), filename="cat.png"), reference=ctx.message)
-
-@bot.command()
-async def joke(ctx):
-	await ctx.send(play.joke(), reference=ctx.message)
-	
-@bot.command()
-async def quote(ctx):
-	await ctx.send(play.quote(), reference=ctx.message)
-
-@bot.command(aliases=["8ball"])
-async def eightball(ctx):
-	await ctx.send('🎱 - ' + play.eightball(), reference=ctx.message)
-	
-@bot.command()
-async def fakeperson(ctx):
-	await ctx.send(play.fakePerson(), reference=ctx.message)
-
-@bot.command()
-async def rolldice(ctx):
-	await ctx.send(f"**{ctx.message.author.name}** rolled a **{play.dice()}**", reference=ctx.message)
-
-@bot.command()
 async def google(ctx, *, args):
 	await ctx.send(f"Here, allow me to google that one for you:\nhttps://letmegooglethat.com/?q={args.replace(' ', '+')}",reference=ctx.message)
-
-@bot.command()
-async def pokedex(ctx, *, pokemon):
-    await ctx.send(embed=play.pokedex(pokemon))
-    
-@bot.command()
-async def dogpic(ctx, *, breed=None):
-    await ctx.send(embed=play.dogpic(breed))
-
 """   
 
 				Utility Commands
@@ -371,10 +323,10 @@ def main() -> None:
 	logger.info(f"Arguments Passed {args}")
 	logger.info("Logger initialised")
 	logger.info("Attempting to run Zorak")
-	if args.discord_token is not None:
-		bot.run(args.discord_token)
-	else:
-		bot.run(os.environ['TOKEN'])
+	# if args.discord_token is not None:
+	# 	bot.run(args.discord_token)
+	# else:
+	# 	bot.run(os.environ['TOKEN'])
 
 if __name__ == "__main__":
     main()
