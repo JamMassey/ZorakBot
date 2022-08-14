@@ -57,14 +57,14 @@ def get_joke():
 
 @commands.command()
 async def joke(ctx):
-	await ctx.send(joke(), reference=ctx.message)
+	await ctx.send(get_joke(), reference=ctx.message)
   
 def get_quote():
 	return (json.loads(requests.get('https://zenquotes.io/api/random').text)[0]['q'] + "\n- " + json.loads(requests.get('https://zenquotes.io/api/random').text)[0]['a'])
 
 @commands.command()
 async def quote(ctx):
-	await ctx.send(play.quote(), reference=ctx.message)
+	await ctx.send(get_quote(), reference=ctx.message)
 	
 def get_eightball():
     return random.choice(EIGHTBALL_LIST)
@@ -94,7 +94,7 @@ def get_dog_pic(breed):
 	return embed
 
 @commands.command()
-async def dogpic(ctx, *, breed=None):
+async def dog_pic(ctx, *, breed=None):
     await ctx.send(embed=get_dog_pic(breed))
 
 def get_pokedex(pokemon):

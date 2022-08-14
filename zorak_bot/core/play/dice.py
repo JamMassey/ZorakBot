@@ -1,4 +1,5 @@
 import random
+from discord.ext import commands
 
 
 def n_sided_dice(n:int = 6):

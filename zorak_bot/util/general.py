@@ -15,7 +15,7 @@ texFont = font_manager.FontProperties(size=30, family='serif', math_fontfamily='
 
 requests.packages.urllib3.disable_warnings()
 
-def get_callable_cells(function):
+def get_callable_cells(function): #For discerning if a function has been wrapped with a decorator
   callables = []
   if not hasattr(function, 'func_closure'):
     if hasattr(function, 'view_func'):
